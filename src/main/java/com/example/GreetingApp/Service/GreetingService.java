@@ -1,3 +1,4 @@
+
 package com.example.GreetingApp.Service;
 import com.example.GreetingApp.Model.Greeting;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,16 @@ public class GreetingService {
 
     public List<Greeting> getAllGreetings() {
         return greetingRepository.findAll();
+    }
+
+    public Greeting updateGreetingMessage(Long id, String newMessage) {
+        Optional<Greeting> existingGreeting = greetingRepository.findById(id);
+        if (existingGreeting.isPresent()) {
+            Greeting greeting = existingGreeting.get();
+            greeting.setMessage(newMessage);  // Update message
+            return greetingRepository.save(greeting);  // Save updated greeting
+        } else {
+            throw new RuntimeException("Greeting with ID " + id + " not found.");
+        }
     }
 }
